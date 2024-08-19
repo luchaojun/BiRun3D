@@ -18,11 +18,12 @@ def send_email(html_content):
     mail_pass = "Mis@202406"  # 是邮箱授权口令，不是邮箱登录密码
     sender = "kapok_shopfloor@clevo.com.tw"  # 发送邮件邮箱
     receivers = ["sky-lj@clevo.com.tw", "cheyagang@clevo.com.tw", "chaojun_Lu@clevo.com.tw"]  # 接收邮件，可添加多个邮箱
+    # receivers = ["chaojun_Lu@clevo.com.tw"]  # 接收邮件，可添加多个邮箱
     message = MIMEMultipart("alternative")
     message['From'] = "kapok_shopfloor@clevo.com.tw"  # 邮件发信人，也可以自己定义，建议和发件人一致
     message['To'] = ','.join(receivers)
     # 邮件收件人，可自己定义，建议和收件人一致
-    subject = '机种测试汇总表'
+    subject = 'BI RUN 3D 自動化報表'
     message['Subject'] = Header(subject, 'utf-8')
 
     # 将HTML内容添加到邮件中
@@ -84,7 +85,7 @@ def create_html(data_rows):
             <tr>
                 <td>{order_number}</td>
                 <td>{device_name}</td>
-                <td><a href="http://172.16.7.61/index.asp?device={device_name}">{count}</a></td>
+                <td><a href="http://ksintranet.clevo.com.tw/Shop_Floor/test/ljc/run3dautoreport_index.asp?device_name={device_name}">{count}</a></td>
                 <td>{status}</td>
             </tr>
         """.format(order_number=order_number, device_name=data_row[0], count=data_row[1], status='Close' if int(data_row[1])>=5000 else 'Open')
@@ -119,4 +120,4 @@ if __name__ == "__main__":
     data_rows = operate_db_select_info()
     html_content = create_html(data_rows)
     print(html_content)
-    # send_email(html_content)
+    send_email(html_content)
